@@ -294,7 +294,7 @@ void stereo::callback(const sensor_msgs::ImageConstPtr& left, const sensor_msgs:
 
 rgbd::rgbd(const std::shared_ptr<openvslam::config>& cfg, const std::string& vocab_file_path, const std::string& mask_img_path)
     : system(cfg, vocab_file_path, mask_img_path),
-      color_sf_(it_, "camera/color/image_raw", 1),
+      color_sf_(it_, "camera/rgb/image_raw", 1),
       depth_sf_(it_, "camera/depth/image_raw", 1) {
     use_exact_time_ = false;
     private_nh_.param("use_exact_time", use_exact_time_, use_exact_time_);
