@@ -1,23 +1,30 @@
-# TUM RGBD monocular model for 01
+# Custom calibration file for simulated camera
 
 #==============#
 # Camera Model #
 #==============#
 
 Camera:
-  name: "TUM RGBD monocular 01"
-  setup: "monocular"
+  name: "iris depth camera"
+  setup: "RGBD"
   model: "perspective"
+
+  fx: 520
+  fy: 520
+  cx: 320
+  cy: 250
 
   k1: 0.0
   k2: 0.0
+  p1: 0.0
+  p2: 0.0
   k3: 0.0
-  t1: 0.0
-  t2: 0.0
 
   fps: 30.0
   cols: 640
   rows: 480
+  focal_x_baseline: 40.0
+
 
   color_order: "RGB"
 
@@ -34,7 +41,7 @@ Tracking:
 #================#
 
 Feature:
-  scale_factor: 2
+  scale_factor: 1.2
   num_levels: 8
   ini_fast_threshold: 20
   min_fast_threshold: 7
