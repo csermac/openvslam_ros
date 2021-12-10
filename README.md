@@ -3,6 +3,8 @@
 This is a modified package to serve the purposes of [this project](https://github.com/csermac/mavros_px4_tests).
 The main difference consists in defaulting to `ros` branch and having different topic names.
 
+Please refer to the readme in the above repo for instructions on how to use this repo.
+
 [OpenVSLAM](https://github.com/OpenVSLAM-Community/openvslam)'s ROS package.
 
 ## Subscribed topics

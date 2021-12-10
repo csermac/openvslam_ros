@@ -36,3 +36,9 @@ cmake-build-release/
 *.exe
 *.out
 *.app
+
+# build directory created for lspserver
+build/
+
+# ignore maps, stored elsewhere
+*.msg
