@@ -1,5 +1,8 @@
 # openvslam_ros
 
+This is a modified package to serve the purposes of [this project](https://github.com/csermac/mavros_px4_tests).
+The main difference consists in defaulting to `ros` branch and having different topic names.
+
 [OpenVSLAM](https://github.com/OpenVSLAM-Community/openvslam)'s ROS package.
 
 ## Subscribed topics
