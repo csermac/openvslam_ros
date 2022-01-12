@@ -131,7 +131,7 @@ void system::setParams() {
     private_nh_.param("camera_frame", camera_frame_, camera_frame_);
 
     // Set publish_tf to false if not using TF
-    publish_tf_ = false;
+    publish_tf_ = true;
     private_nh_.param("publish_tf", publish_tf_, publish_tf_);
 
     // Set publish_pointcloud_ to true if publish pointcloud
@@ -142,7 +142,7 @@ void system::setParams() {
     private_nh_.param("publish_keyframes", publish_keyframes_, publish_keyframes_);
 
     // Publish pose's timestamp in the future
-    transform_tolerance_ = 0.5;
+    transform_tolerance_ = 0.6;
     private_nh_.param("transform_tolerance", transform_tolerance_, transform_tolerance_);
 }
 
