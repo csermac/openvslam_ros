@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.1)
 project(openvslam_ros LANGUAGES CXX C)
 
+
+
 if(POLICY CMP0042)
     cmake_policy(SET CMP0042 NEW)
 endif()
@@ -73,6 +75,8 @@ set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O3 -ffast-math")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -ffast-math")
 
 set(BUILD_WITH_MARCH_NATIVE OFF CACHE BOOL "Enable architecture-aware optimization (-march=native)")
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 if(BUILD_WITH_MARCH_NATIVE)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mtune=native -march=native")
@@ -165,7 +169,7 @@ set(json_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/3rd/json/include)
 include_directories(${json_INCLUDE_DIR})
 
 # pangolin viewer
-set(USE_PANGOLIN_VIEWER OFF CACHE BOOL "Enable Pangolin Viewer")
+set(USE_PANGOLIN_VIEWER ON CACHE BOOL "Enable Pangolin Viewer")
 if(USE_PANGOLIN_VIEWER)
     find_library(Pangolin_Viewer_LIB pangolin_viewer)
     find_package(Pangolin REQUIRED)
@@ -206,3 +210,4 @@ link_libraries(
         ${openvslam_LIBS})
 
 add_subdirectory(src)
+
