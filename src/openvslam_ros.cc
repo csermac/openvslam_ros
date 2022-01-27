@@ -135,7 +135,7 @@ void system::setParams() {
     private_nh_.param("publish_tf", publish_tf_, publish_tf_);
 
     // Set publish_pointcloud_ to true if publish pointcloud
-    publish_pointcloud_ = false;
+    publish_pointcloud_ = true;
     private_nh_.param("publish_pointcloud", publish_pointcloud_, publish_pointcloud_);
 
     publish_keyframes_ = true;
