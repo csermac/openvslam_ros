@@ -127,18 +127,18 @@ void system::setParams() {
     base_link_ = std::string("base_footprint");
     private_nh_.param("base_link", base_link_, base_link_);
 
-    camera_frame_ = std::string("camera_frame");
-    private_nh_.param("camera_frame", camera_frame_, camera_frame_);
+    camera_frame_ = std::string("camera_link");
+    private_nh_.param("camera_link", camera_frame_, camera_frame_);
 
     // Set publish_tf to false if not using TF
-    publish_tf_ = true;
+    publish_tf_ = false;
     private_nh_.param("publish_tf", publish_tf_, publish_tf_);
 
     // Set publish_pointcloud_ to true if publish pointcloud
     publish_pointcloud_ = true;
     private_nh_.param("publish_pointcloud", publish_pointcloud_, publish_pointcloud_);
 
-    publish_keyframes_ = true;
+    publish_keyframes_ = false;
     private_nh_.param("publish_keyframes", publish_keyframes_, publish_keyframes_);
 
     // Publish pose's timestamp in the future
