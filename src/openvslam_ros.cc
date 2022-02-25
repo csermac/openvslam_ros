@@ -131,7 +131,7 @@ void system::setParams() {
     private_nh_.param("camera_link", camera_frame_, camera_frame_);
 
     // Set publish_tf to false if not using TF
-    publish_tf_ = false;
+    publish_tf_ = true;
     private_nh_.param("publish_tf", publish_tf_, publish_tf_);
 
     // Set publish_pointcloud_ to true if publish pointcloud
