@@ -30,9 +30,9 @@ system::system(const std::shared_ptr<openvslam::config>& cfg, const std::string&
       map_to_odom_broadcaster_(std::make_shared<tf2_ros::TransformBroadcaster>()),
       tf_(std::make_unique<tf2_ros::Buffer>()),
 
-
       transform_listener_(std::make_shared<tf2_ros::TransformListener>(*tf_)) {
     init_pose_sub_ = nh_.subscribe(
+		SLAM_.get_tracker()->last_tracking_state_;
         "/initialpose", 1, &system::init_pose_callback, this);
     setParams();
     rot_ros_to_cv_map_frame_ = (Eigen::Matrix3d() << 0, 0, 1,
