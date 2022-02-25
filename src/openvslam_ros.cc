@@ -15,6 +15,8 @@
 #include <opencv2/imgcodecs.hpp>
 #include <Eigen/Geometry>
 
+#include <std_msgs/Int8.h>
+
 namespace openvslam_ros {
 system::system(const std::shared_ptr<openvslam::config>& cfg, const std::string& vocab_file_path, const std::string& mask_img_path)
     : SLAM_(cfg, vocab_file_path), cfg_(cfg), private_nh_("~"), it_(nh_), tp_0_(std::chrono::steady_clock::now()),
@@ -23,8 +25,12 @@ system::system(const std::shared_ptr<openvslam::config>& cfg, const std::string&
       pc_pub_(private_nh_.advertise<sensor_msgs::PointCloud2>("pointcloud", 1)),
       keyframes_pub_(private_nh_.advertise<geometry_msgs::PoseArray>("keyframes", 1)),
       keyframes_2d_pub_(private_nh_.advertise<geometry_msgs::PoseArray>("keyframes_2d", 1)),
+
+      state_pub_(private_nh_.advertise<std_msgs::Int8>("status", 1)),
       map_to_odom_broadcaster_(std::make_shared<tf2_ros::TransformBroadcaster>()),
       tf_(std::make_unique<tf2_ros::Buffer>()),
+
+
       transform_listener_(std::make_shared<tf2_ros::TransformListener>(*tf_)) {
     init_pose_sub_ = nh_.subscribe(
         "/initialpose", 1, &system::init_pose_callback, this);

@@ -40,9 +40,15 @@ public:
     cv::Mat mask_;
     std::vector<double> track_times_;
     ros::Publisher pose_pub_;
+
+	// publish algorithm mode from tracker_state_t variable
+	// NotInitialized, Initializing, Tracking, Lost
+
     ros::Publisher pc_pub_;
     ros::Publisher keyframes_pub_;
     ros::Publisher keyframes_2d_pub_;
+
+	ros::Publisher state_pub_;
     ros::Subscriber init_pose_sub_;
     std::shared_ptr<tf2_ros::TransformBroadcaster> map_to_odom_broadcaster_;
     std::string odom_frame_, map_frame_, base_link_;
