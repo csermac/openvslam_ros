@@ -31,6 +31,9 @@ public:
     void publish_pointcloud(const ros::Time& stamp);
     void publish_keyframes(const ros::Time& stamp);
     void setParams();
+
+    void get_tracker();
+
     openvslam::system SLAM_;
     std::shared_ptr<openvslam::config> cfg_;
     ros::NodeHandle nh_;
@@ -41,14 +44,14 @@ public:
     std::vector<double> track_times_;
     ros::Publisher pose_pub_;
 
-	// publish algorithm mode from tracker_state_t variable
-	// NotInitialized, Initializing, Tracking, Lost
-
     ros::Publisher pc_pub_;
     ros::Publisher keyframes_pub_;
     ros::Publisher keyframes_2d_pub_;
 
-	ros::Publisher state_pub_;
+    // publish algorithm mode from tracker_state_t variable
+    // NotInitialized, Initializing, Tracking, Lost
+    ros::Publisher track_state_pub_;
+
     ros::Subscriber init_pose_sub_;
     std::shared_ptr<tf2_ros::TransformBroadcaster> map_to_odom_broadcaster_;
     std::string odom_frame_, map_frame_, base_link_;
@@ -58,6 +61,7 @@ public:
     bool publish_tf_;
     bool publish_pointcloud_;
     bool publish_keyframes_;
+    bool publish_trackstate_;
     double transform_tolerance_;
 
 private:

@@ -15,7 +15,7 @@
 #include <opencv2/imgcodecs.hpp>
 #include <Eigen/Geometry>
 
-#include <std_msgs/Int8.h>
+#include <std_msgs/Int32.h>
 
 namespace openvslam_ros {
 system::system(const std::shared_ptr<openvslam::config>& cfg, const std::string& vocab_file_path, const std::string& mask_img_path)
@@ -26,13 +26,14 @@ system::system(const std::shared_ptr<openvslam::config>& cfg, const std::string&
       keyframes_pub_(private_nh_.advertise<geometry_msgs::PoseArray>("keyframes", 1)),
       keyframes_2d_pub_(private_nh_.advertise<geometry_msgs::PoseArray>("keyframes_2d", 1)),
 
-      state_pub_(private_nh_.advertise<std_msgs::Int8>("status", 1)),
+      // publisher for tracking state
+      track_state_pub_(private_nh_.advertise<std_msgs::Int32>("tracking_status", 1)),
+
       map_to_odom_broadcaster_(std::make_shared<tf2_ros::TransformBroadcaster>()),
       tf_(std::make_unique<tf2_ros::Buffer>()),
 
       transform_listener_(std::make_shared<tf2_ros::TransformListener>(*tf_)) {
-    init_pose_sub_ = nh_.subscribe(
-		SLAM_.get_tracker()->last_tracking_state_;
+	init_pose_sub_ = nh_.subscribe(
         "/initialpose", 1, &system::init_pose_callback, this);
     setParams();
     rot_ros_to_cv_map_frame_ = (Eigen::Matrix3d() << 0, 0, 1,
@@ -41,6 +42,7 @@ system::system(const std::shared_ptr<openvslam::config>& cfg, const std::string&
                                    .finished();
 }
 
+    
 void system::publish_pose(const Eigen::Matrix4d& cam_pose_wc, const ros::Time& stamp) {
     // Extract rotation matrix and translation vector from
     Eigen::Matrix3d rot(cam_pose_wc.block<3, 3>(0, 0));
@@ -106,6 +108,7 @@ void system::publish_keyframes(const ros::Time& stamp) {
     keyframes_2d_msg.header = keyframes_msg.header;
     std::vector<std::shared_ptr<openvslam::data::keyframe>> all_keyfrms;
     SLAM_.get_map_publisher()->get_keyframes(all_keyfrms);
+
     for (const auto keyfrm : all_keyfrms) {
         if (!keyfrm || keyfrm->will_be_erased()) {
             continue;
@@ -146,6 +149,9 @@ void system::setParams() {
 
     publish_keyframes_ = false;
     private_nh_.param("publish_keyframes", publish_keyframes_, publish_keyframes_);
+
+    publish_trackstate_ = true;
+    private_nh_.param("publish_track_state", publish_trackstate_, publish_trackstate_);
 
     // Publish pose's timestamp in the future
     transform_tolerance_ = 0.6;
@@ -345,8 +351,16 @@ void rgbd::callback(const sensor_msgs::ImageConstPtr& color, const sensor_msgs::
     if (publish_pointcloud_) {
         publish_pointcloud(color->header.stamp);
     }
+
     if (publish_keyframes_) {
         publish_keyframes(color->header.stamp);
     }
+
+    if (publish_trackstate_) {
+	std_msgs::Int32 status;
+	status.data = static_cast<int>(SLAM_.get_tracker()->last_tracking_state_);
+	track_state_pub_.publish(status);
+    }
+
 }
 } // namespace openvslam_ros
